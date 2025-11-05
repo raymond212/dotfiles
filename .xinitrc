@@ -1,2 +1,2 @@
-xrdb -merge ~/.Xresources.laptop
+xrdb -load ~/.Xresources.laptop
 exec i3
