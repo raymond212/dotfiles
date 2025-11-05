@@ -1,0 +1,4 @@
+#!/bin/bash
+set -e
+echo "Display configuration set to: docked"
+autorandr --load docked 

@@ -1,0 +1,3 @@
+#!/bin/bash
+xrdb -load ~/.Xresources.laptop
+i3-msg restart
