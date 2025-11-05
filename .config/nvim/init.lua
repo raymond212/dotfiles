@@ -1,11 +1,3 @@
-<<<<<<< Updated upstream
--- Neovim configuration
-
--- Line numbers
-vim.opt.number = true
-
--- Indentation
-=======
 ----- NEOVIM CONFIGURATION -----
 
 -- Settings
@@ -15,7 +7,6 @@ vim.g.loaded_netrwPlugin = 1
 -- Editing
 vim.opt.number = true
 
->>>>>>> Stashed changes
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
@@ -25,16 +16,6 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.hlsearch = true
 
-<<<<<<< Updated upstream
--- Better UI
-vim.opt.cursorline = true
-vim.opt.termguicolors = true
-
--- Clipboard
-vim.opt.clipboard = "unnamedplus"
-
--- Save and quit shortcuts
-=======
 -- Clipboard
 vim.opt.clipboard = "unnamedplus"
 
@@ -43,13 +24,10 @@ vim.opt.cursorline = true
 vim.opt.termguicolors = true
 
 -- Keymaps
->>>>>>> Stashed changes
 vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>w", ":w<CR>")
 vim.keymap.set("n", "<leader>q", ":q<CR>")
 vim.keymap.set("n", "<leader>x", ":q!<CR>")
-<<<<<<< Updated upstream
-=======
 
 vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>")
 vim.keymap.set("n", "<leader>o", ":NvimTreeFindFile<CR>")
@@ -144,4 +122,4 @@ require("bufferline").setup({
     },
   },
 })
->>>>>>> Stashed changes
+
