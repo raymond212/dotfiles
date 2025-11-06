@@ -45,3 +45,11 @@ alias memo='$EDITOR ~/memo.txt'
 
 alias google-laptop='nohup google-chrome-stable --force-device-scale-factor=2 >/dev/null 2>&1 & disown'
 alias google-docked='nohup google-chrome-stable --force-device-scale-factor=1 >/dev/null 2>&1 & disown'
+
+# Functions
+foliosync() {
+  folio switch -q staging
+  folio add -u
+  folio commit -m "update: $(date +'%F %H:%M')"
+  folio push
+}
