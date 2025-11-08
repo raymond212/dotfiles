@@ -41,7 +41,7 @@ alias fm='nohup thunar . >/dev/null 2>&1 & disown'
 
 alias doc='cd ~/Documents'
 alias dow='cd ~/Downloads'
-alias sc='cd ~/Pictures/Screenshots'
+alias sc='cd ~/Pictures/screenshots'
 alias memo='$EDITOR ~/memo.txt'
 
 alias google-laptop='nohup google-chrome-stable --force-device-scale-factor=2 >/dev/null 2>&1 & disown'
