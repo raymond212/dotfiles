@@ -8,28 +8,15 @@
 
 # Global properties
 separator=true
-separator_block_width=70
+separator_block_width=30
 command=~/.config/i3blocks/blocklets.sh $BLOCK_NAME
+
+[system]
 interval=1
 
-[cpu]
+[status]
+interval=5
+signal=10
 
-[gpu]
-
-[ram]
-
-[disk]
-
-[wifi]
-
-[ethernet]
-
-[battery]
-
-[volume]
-
-[brightness]
-
-[time]
-
-[date]
+[datetime]
+interval=1

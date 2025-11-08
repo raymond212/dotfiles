@@ -1,43 +1,47 @@
 #!/usr/bin/env bash
 
-fn_volume() {
-  mute=$(pamixer --get-mute)
-  vol=$(pamixer --get-volume)
-
-  if [[ $mute == "true" ]]; then
-    icon=" "
-  elif (( $vol <= 50 )); then
-    icon=" "
-  elif (( $vol > 50 )); then
-    icon=" "
-  fi
-
-  echo "$icon $vol%"
-}
-
-fn_brightness() {
-  cur=$(brightnessctl get)
-  max=$(brightnessctl max)
-  pct=$((100*cur/max))
-  echo "  $pct%"
-}
-
+# ===== date and time =====
 fn_time() {
-  echo "  $(date '+%H:%M:%S')"
+  echo " $(date '+%H:%M')"
 }
 
 fn_date() {
-  echo "  $(date '+%m/%d/%Y')"
+  echo " $(date '+%m/%d/%Y')"
 }
 
-fn_disk() {
-  usage=$(df -B1 --output=used,source | awk '
-    $2 == "/dev/nvme0n1p6" {
-      gb = $1 / (1024 * 1024 * 1024)
-      printf("%.1fG\n", gb)
+fn_datetime() {
+  echo "$(fn_time)  $(fn_date)"
+}
+
+# ===== wifi, ethernet, battery, volume, brightness =====
+fn_wifi() {
+  interface="wlan0"
+  status=$(iw dev $interface link)
+
+  if [[ $status == "Not connected." ]]; then
+    echo "󰤯 down"
+    exit
+  fi
+
+  quality=$(iw dev $interface link | awk '
+    /dBm$/ {
+      dBm = $2
+      if (dBm > -50) pct = 100
+      else if (dBm < -100) pct = 0
+      else pct = (dBm + 100) * 2
+      printf pct
     }'
   )
-  echo "  $usage"
+
+  echo "  $quality%"
+}
+
+fn_ethernet() {
+  if nmcli -t -f TYPE,STATE device | grep -q "ethernet:connected"; then
+    echo "󰈀 up"
+  else
+    echo "󰈀 down"
+  fi
 }
 
 fn_battery() {
@@ -71,69 +75,89 @@ fn_battery() {
     icon="󰁹"
   fi
 
-  echo "$icon $pct%"
+  echo "$icon $pct%"
 }
 
-fn_wifi() {
-  interface="wlan0"
-  status=$(iw dev $interface link)
+fn_volume() {
+  mute=$(pamixer --get-mute)
+  vol=$(pamixer --get-volume)
 
-  if [[ $status == "Not connected." ]]; then
-    echo "󰤯  down"
-    exit
-  fi
-
-  quality=$(iw dev $interface link | awk '
-    /dBm$/ {
-      dBm = $2
-      if (dBm > -50) pct = 100
-      else if (dBm < -100) pct = 0
-      else pct = (dBm + 100) * 2
-      printf pct
-    }'
-  )
-
-  echo "  $quality%"
-}
-
-fn_ethernet() {
-  if nmcli -t -f TYPE,STATE device | grep -q "ethernet:connected"; then
-    echo "󰈀  up"
+  if [[ $mute == "true" ]]; then
+    icon=" "
+  elif (( $vol <= 30 )); then
+    icon=" "
+  elif (( $vol <= 60 )); then
+    icon=" "
   else
-    echo "󰈀  down"
+    icon=" "
   fi
+
+  echo "$icon $vol%"
 }
 
+fn_brightness() {
+  cur=$(brightnessctl get)
+  max=$(brightnessctl max)
+  pct=$((100*cur/max))
+  echo " $pct%"
+}
+
+fn_status() {
+  echo "$(fn_wifi)  $(fn_ethernet)  $(fn_battery)  $(fn_volume)  $(fn_brightness)"
+}
+
+# ===== cpu, gpu, ram, disk =====
 fn_cpu() {
  usage=$(top -bn1 | grep "Cpu(s)" | \
           sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | \
           awk '{printf int(100 - $1)}')
- echo "  $usage%"
+ echo " $usage%"
 }
 
 fn_gpu() {
   usage=$(timeout 0.5s intel_gpu_top -l -s 200 | \
           awk 'NR==5 {print int($7)}')
-  echo "󰢮  $usage%"
+  echo "󰢮 $usage%"
 }
 
 fn_ram() {
   usage=$(free -m | awk 'NR==2 {printf "%.1fG\n", $3/1024}')
-  echo "  $usage"
+  echo " $usage"
 }
+
+fn_disk() {
+  usage=$(df -B1 --output=used,source | awk '
+    $2 == "/dev/nvme0n1p6" {
+      gb = $1 / (1024 * 1024 * 1024)
+      printf("%.1fG\n", gb)
+    }'
+  )
+  echo " $usage"
+}
+
+fn_system() {
+  echo "$(fn_cpu)  $(fn_gpu)  $(fn_ram)  $(fn_disk)"
+}
+
 
 name="$1"
 
 case "$name" in
-  volume) fn_volume;;
-  brightness) fn_brightness;;
+  # datetime
   time) fn_time;;
   date) fn_date;;
-  disk) fn_disk;;
-  battery) fn_battery;;
+  datetime) fn_datetime;;
+  # status
   wifi) fn_wifi;;
   ethernet) fn_ethernet;;
+  battery) fn_battery;; 
+  volume) fn_volume;;
+  brightness) fn_brightness;;
+  status) fn_status;;
+  # system
   cpu) fn_cpu;;
   gpu) fn_gpu;;
   ram) fn_ram;;
+  disk) fn_disk;;
+  system) fn_system;;
 esac
