@@ -12,30 +12,32 @@ fn_volume() {
     icon=" "
   fi
 
-  echo "$icon$vol%"
+  echo "$icon $vol%"
 }
 
 fn_brightness() {
   cur=$(brightnessctl get)
   max=$(brightnessctl max)
   pct=$((100*cur/max))
-  echo " $pct%"
+  echo "  $pct%"
 }
 
 fn_time() {
-  echo " $(date '+%H:%M:%S')"
+  echo "  $(date '+%H:%M:%S')"
 }
 
 fn_date() {
-  echo " $(date '+%m/%d/%Y')"
+  echo "  $(date '+%m/%d/%Y')"
 }
 
 fn_disk() {
-  df -B1 --output=used,source | awk '
+  usage=$(df -B1 --output=used,source | awk '
     $2 == "/dev/nvme0n1p6" {
       gb = $1 / (1024 * 1024 * 1024)
-      printf(" %.1fG\n", gb)
+      printf("%.1fG\n", gb)
     }'
+  )
+  echo "  $usage"
 }
 
 fn_battery() {
@@ -69,7 +71,7 @@ fn_battery() {
     icon="󰁹"
   fi
 
-  echo "$icon$pct%"
+  echo "$icon $pct%"
 }
 
 fn_wifi() {
@@ -77,7 +79,7 @@ fn_wifi() {
   status=$(iw dev $interface link)
 
   if [[ $status == "Not connected." ]]; then
-    echo " down"
+    echo "  down"
     exit
   fi
 
@@ -91,16 +93,21 @@ fn_wifi() {
     }'
   )
 
-  echo " $quality%"
+  echo "  $quality%"
 }
 
 fn_ethernet() {
+  if [[ ! -d "/sys/class/net/eth0" ]]; then
+    echo "󰈀  down"
+    return
+  fi
+
   status=$(iw dev eth0 link)
 
   if [[ $status == "Not connected." ]]; then
-    echo "󰈀 down"
+    echo "󰈀  down"
   else
-    echo "󰈀 up"
+    echo "󰈀  up"
   fi
 }
 
@@ -108,12 +115,12 @@ fn_cpu() {
  usage=$(top -bn1 | grep "Cpu(s)" | \
            sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | \
            awk '{print 100 - $1"%"}')
- echo " $usage"
+ echo "  $usage"
 }
 
 fn_ram() {
   usage=$(free -m | awk 'NR==2{printf "%.1fG\n", $3/1024}')
-  echo " $usage"
+  echo "  $usage"
 }
 
 name="$1"

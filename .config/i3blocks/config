@@ -8,7 +8,7 @@
 
 # Global properties
 separator=true
-separator_block_width=10
+separator_block_width=70
 command=~/.config/i3blocks/blocklets.sh $BLOCK_NAME
 interval=1
 
