@@ -187,8 +187,11 @@ bindsym $mod+r mode "resize"
 ################################################################################
 # Additional settings
 
-# picom compositor
+# Compositor
 exec_always --no-startup-id sh -c 'pkill -x picom; picom --daemon'
+
+# Wallpaper
+exec_always --no-startup-id ~/.fehbg
 
 # Chinese input
 exec --no-startup-id fcitx5
