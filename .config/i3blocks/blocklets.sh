@@ -106,13 +106,19 @@ fn_ethernet() {
 
 fn_cpu() {
  usage=$(top -bn1 | grep "Cpu(s)" | \
-           sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | \
-           awk '{print 100 - $1"%"}')
- echo "  $usage"
+          sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | \
+          awk '{printf int(100 - $1)}')
+ echo "  $usage%"
+}
+
+fn_gpu() {
+  usage=$(timeout 0.5s intel_gpu_top -l -s 200 | \
+          awk 'NR==5 {print int($7)}')
+  echo "󰢮  $usage%"
 }
 
 fn_ram() {
-  usage=$(free -m | awk 'NR==2{printf "%.1fG\n", $3/1024}')
+  usage=$(free -m | awk 'NR==2 {printf "%.1fG\n", $3/1024}')
   echo "  $usage"
 }
 
@@ -128,5 +134,6 @@ case "$name" in
   wifi) fn_wifi;;
   ethernet) fn_ethernet;;
   cpu) fn_cpu;;
+  gpu) fn_gpu;;
   ram) fn_ram;;
 esac
