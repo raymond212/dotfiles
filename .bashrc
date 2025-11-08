@@ -29,6 +29,7 @@ PROMPT_COMMAND='history -a; history -c; history -r;'
 
 # Git
 alias dot='git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME'
+alias dotexclude='$EDITOR ~/.dotfiles.git/info/exclude'
 alias folio='git --git-dir=$HOME/.folio.git --work-tree=$HOME'
 
 # Aliases
