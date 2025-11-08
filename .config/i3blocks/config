@@ -1,0 +1,33 @@
+# i3blocks configuration file
+#
+# The i3blocks man page describes the usage of the binary,
+# and its website describes the configuration:
+#
+#     https://vivien.github.io/i3blocks
+
+
+# Global properties
+separator=true
+separator_block_width=10
+command=~/.config/i3blocks/blocklets.sh $BLOCK_NAME
+interval=1
+
+[cpu]
+
+[ram]
+
+[disk]
+
+[wifi]
+
+[ethernet]
+
+[battery]
+
+[volume]
+
+[brightness]
+
+[time]
+
+[date]
