@@ -79,7 +79,7 @@ fn_wifi() {
   status=$(iw dev $interface link)
 
   if [[ $status == "Not connected." ]]; then
-    echo "  down"
+    echo "󰤯  down"
     exit
   fi
 
@@ -97,17 +97,10 @@ fn_wifi() {
 }
 
 fn_ethernet() {
-  if [[ ! -d "/sys/class/net/eth0" ]]; then
-    echo "󰈀  down"
-    return
-  fi
-
-  status=$(iw dev eth0 link)
-
-  if [[ $status == "Not connected." ]]; then
-    echo "󰈀  down"
-  else
+  if nmcli -t -f TYPE,STATE device | grep -q "ethernet:connected"; then
     echo "󰈀  up"
+  else
+    echo "󰈀  down"
   fi
 }
 
