@@ -8,15 +8,17 @@
 
 # Global properties
 separator=true
-separator_block_width=30
 command=~/.config/i3blocks/blocklets.sh $BLOCK_NAME
 
 [system]
-interval=1
+interval=5
+format=json
 
 [status]
 interval=5
 signal=10
+format=json
 
 [datetime]
 interval=1
+format=json

@@ -15,25 +15,20 @@ fn_datetime() {
 
 # ===== wifi, ethernet, battery, volume, brightness =====
 fn_wifi() {
-  interface="wlan0"
-  status=$(iw dev $interface link)
-
-  if [[ $status == "Not connected." ]]; then
+  if nmcli -t -f TYPE,STATE device | grep -q "wifi:connected"; then
+    quality=$(iw dev wlan0 link | awk '
+      /dBm$/ {
+        dBm = $2
+        if (dBm > -50) pct = 100
+        else if (dBm < -100) pct = 0
+        else pct = (dBm + 100) * 2
+        printf pct
+      }'
+    )
+    echo "  $quality%"
+  else
     echo "󰤯 down"
-    exit
   fi
-
-  quality=$(iw dev $interface link | awk '
-    /dBm$/ {
-      dBm = $2
-      if (dBm > -50) pct = 100
-      else if (dBm < -100) pct = 0
-      else pct = (dBm + 100) * 2
-      printf pct
-    }'
-  )
-
-  echo "  $quality%"
 }
 
 fn_ethernet() {
@@ -142,22 +137,35 @@ fn_system() {
 
 name="$1"
 
-case "$name" in
-  # datetime
-  time) fn_time;;
-  date) fn_date;;
-  datetime) fn_datetime;;
-  # status
-  wifi) fn_wifi;;
-  ethernet) fn_ethernet;;
-  battery) fn_battery;; 
-  volume) fn_volume;;
-  brightness) fn_brightness;;
-  status) fn_status;;
-  # system
-  cpu) fn_cpu;;
-  gpu) fn_gpu;;
-  ram) fn_ram;;
-  disk) fn_disk;;
-  system) fn_system;;
-esac
+fn_full_text() {
+  case "$name" in
+    # datetime
+    time) fn_time;;
+    date) fn_date;;
+    datetime) fn_datetime;;
+    # status
+    wifi) fn_wifi;;
+    ethernet) fn_ethernet;;
+    battery) fn_battery;;
+    volume) fn_volume;;
+    brightness) fn_brightness;;
+    status) fn_status;;
+    # system
+    cpu) fn_cpu;;
+    gpu) fn_gpu;;
+    ram) fn_ram;;
+    disk) fn_disk;;
+    system) fn_system;;
+  esac
+}
+
+full_text=$(fn_full_text)
+dpi=$(xrdb -query | awk '/Xft.dpi:/ {print $2}')
+
+if (( $dpi >= 144 )); then
+  sep=60
+else
+  sep=30
+fi
+
+echo "{ \"full_text\": \"$full_text\", \"separator_block_width\": \"$sep\" }"
