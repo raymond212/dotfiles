@@ -110,8 +110,8 @@ fn_cpu() {
 }
 
 fn_gpu() {
-  usage=$(timeout 0.5s intel_gpu_top -l -s 200 | \
-          awk 'NR==5 {print int($7)}')
+  usage=$(timeout 0.3s intel_gpu_top -l -s 50 | \
+          awk 'NR==5 {printf "%.0f", $7}')
   echo "󰢮 $usage%"
 }
 
