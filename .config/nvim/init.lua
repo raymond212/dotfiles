@@ -65,6 +65,7 @@ require("lazy").setup({
   { "akinsho/bufferline.nvim", version = "*", dependencies = {
     "nvim-tree/nvim-web-devicons",
   }},
+  { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
 })
 
 -- lualine
@@ -123,3 +124,24 @@ require("bufferline").setup({
   },
 })
 
+-- nvim-treesitter
+require("nvim-treesitter.configs").setup({
+  ensure_installed = {
+    "python",
+    "bash",
+    "json",
+    "yaml",
+    "markdown",
+    -- base parsers
+    "lua",
+    "vim",
+    "vimdoc",
+  },
+  highlight = {
+    enable = true,
+    additional_vim_regex_highlighting = false,
+  },
+  indent = {
+    enable = true,
+  },
+})
