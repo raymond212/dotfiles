@@ -43,6 +43,7 @@ alias doc='cd ~/Documents'
 alias dow='cd ~/Downloads'
 alias sc='cd ~/Pictures/screenshots'
 alias memo='$EDITOR ~/memo.txt'
+alias journal='$EDITOR ~/Documents/journal.md'
 
 alias nvid='nvidia-smi && nvidia-smi | tr -s " " | grep -Eo "| [0-9]+ N/A N/A [0-9]{3,} .*" | awk -F" " '\''{pid=$4; gpu_mem=$7; cmd="cat /proc/"pid"/cmdline | tr \"\\0\" \" \""; cmdline=""; while((cmd|getline cl)>0){cmdline=(cmdline cl)} close(cmd); usercmd="ps -o uname= -p "pid; u=""; while((usercmd|getline uu)>0){u=uu} close(usercmd); timecmd="ps -o etime= -p "pid; et=""; while((timecmd|getline tt)>0){et=tt} close(timecmd); gsub(/^ +| +$/, "", et); if(et ~ /-/){split(et,a,"-"); et=a[1]"d "a[2]} printf "%s\t%s\t%s\t%s\t%s\t%s\n", $1, pid, u, et, gpu_mem, cmdline}'\'''
 
