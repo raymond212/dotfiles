@@ -187,6 +187,10 @@ bindsym $mod+r mode "resize"
 ################################################################################
 # Additional settings
 
+# Gaps
+gaps inner 10
+gaps outer 0
+
 # Compositor
 exec_always --no-startup-id sh -c 'pkill -x picom; picom --daemon'
 
