@@ -2,15 +2,15 @@
 
 # ===== date and time =====
 fn_time() {
-  echo " $(date '+%H:%M')"
+  echo "󰥔 $(date '+%H:%M')"
 }
 
 fn_date() {
-  echo " $(date '+%a %b %d')"
+  echo " $(date '+%a %b %d')"
 }
 
 fn_datetime() {
-  echo "$(fn_time)  $(fn_date)"
+  echo "$(fn_date)  $(fn_time) "
 }
 
 # ===== wifi, ethernet, battery, volume, brightness =====
