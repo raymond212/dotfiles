@@ -41,6 +41,7 @@ alias fm='nohup thunar . >/dev/null 2>&1 & disown'
 
 alias doc='cd ~/Documents'
 alias dow='cd ~/Downloads'
+alias pics='cd ~/Pictures'
 alias sc='cd ~/Pictures/screenshots'
 alias memo='$EDITOR ~/memo.txt'
 alias journal='$EDITOR ~/Documents/journal.md'
