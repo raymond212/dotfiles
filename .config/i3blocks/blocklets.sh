@@ -6,7 +6,7 @@ fn_time() {
 }
 
 fn_date() {
-  echo " $(date '+%a %b %d')"
+  echo "󰃭 $(date '+%a %b %d')"
 }
 
 fn_datetime() {
