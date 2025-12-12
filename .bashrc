@@ -52,10 +52,29 @@ alias nvid='nvidia-smi && nvidia-smi | tr -s " " | grep -Eo "| [0-9]+ N/A N/A [0
 alias google-laptop='nohup google-chrome-stable --force-device-scale-factor=2 >/dev/null 2>&1 & disown'
 alias google-docked='nohup google-chrome-stable --force-device-scale-factor=1 >/dev/null 2>&1 & disown'
 
+alias sinks='pactl list short sinks | awk '\''{ printf "%-10s %s\n", $7, $2 }'\'''
+alias bt-airpods='bluetoothctl connect 2C:32:6A:D9:12:B0'
+alias bt-airpods-dc='bluetoothctl disconnect 2C:32:6A:D9:12:B0'
+alias bt-beats='bluetoothctl connect 78:4F:43:D0:FA:F8'
+alias bt-beats-dc='bluetoothctl disconnect 78:4F:43:D0:FA:F8'
+
 # Functions
 foliosync() {
   folio switch -q staging
   folio add -u
   folio commit -m "update: $(date +'%F %H:%M')"
   folio push
+}
+
+sink-int() {
+  sink="alsa_output.pci-0000_00_1f.3.analog-stereo"
+  pactl set-default-sink "$sink"
+  echo "Default sink set to: $sink"
+}
+
+sink-bt() {
+  sink=$(pactl list short sinks | awk '$2 ~ /^bluez_output\./ { print $2; exit }')
+  [ -z "$sink" ] && { echo "No Bluetooth sink found"; return 1; }
+  pactl set-default-sink "$sink"
+  echo "Default sink set to: $sink"
 }
