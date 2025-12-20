@@ -58,6 +58,9 @@ alias bt-airpods-dc='bluetoothctl disconnect 2C:32:6A:D9:12:B0'
 alias bt-beats='bluetoothctl connect 78:4F:43:D0:FA:F8'
 alias bt-beats-dc='bluetoothctl disconnect 78:4F:43:D0:FA:F8'
 
+alias im-on='fcitx5 &'
+alias im-off='pkill fcitx5'
+
 # Functions
 foliosync() {
   folio switch -q staging
