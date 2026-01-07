@@ -207,6 +207,9 @@ bindsym $mod+d exec rofi -show drun
 # Chinese input
 # exec --no-startup-id fcitx5
 
+# Dropbox
+exec --no-startup-id dropbox start
+
 # Screenshot tool
 bindsym $mod+Shift+s exec --no-startup-id flameshot gui -r -p ~/Pictures/screenshots | xclip -selection clipboard -t image/png
 bindsym Print exec --no-startup-id flameshot screen -n 0 -p ~/Pictures/screenshots
